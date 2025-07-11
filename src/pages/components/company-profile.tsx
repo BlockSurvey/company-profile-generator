@@ -13,6 +13,7 @@ import demoCompanyProfile from '../../../assets/demoCompanyProfile.json';
 export default function CompanyProfile() {
   // Variables
   const [companyProfile, setCompanyProfile] = useState<any>(null);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
     // Get the company name as input
@@ -33,64 +34,105 @@ export default function CompanyProfile() {
     companySymbol: string
   ) => {
     // Fetch the company full details from above all API's endpoint using Promise.all
-    // const [
-    //   financialKeyMetrics,
-    //   shareHoldingsStructure,
-    //   stockPricePerformance,
-    //   companySummary,
-    //   companyManagement,
-    //   companyStockDetails,
-    //   companyOverview
-    // ] = await Promise.all([
-    //   fetch(`http://127.0.0.1:8000/fmp/financial-key-metrics/${companySymbol}`),
-    //   fetch(
-    //     `http://127.0.0.1:8000/fmp/share-holdings-structure/${companySymbol}`
-    //   ),
-    //   fetch(
-    //     `http://127.0.0.1:8000/fmp/stock-price-performance/${companySymbol}`
-    //   ),
-    //   fetch(`http://127.0.0.1:8000/company-summary/${companyName}`),
-    //   fetch(`http://127.0.0.1:8000/company-management/${companyName}`),
-    //   fetch(`http://127.0.0.1:8000/company-stock-details/${companyName}`),
-    //   fetch(`http://127.0.0.1:8000/company-overview/${companyName}`)
-    // ]);
+    const [
+      financialKeyMetrics,
+      shareHoldingsStructure,
+      stockPricePerformance,
+      companySummary,
+      companyManagement,
+      companyStockDetails,
+      companyOverview
+    ] = await Promise.all([
+      fetch(`http://127.0.0.1:8000/fmp/financial-key-metrics/${companySymbol}`),
+      fetch(
+        `http://127.0.0.1:8000/fmp/share-holdings-structure/${companySymbol}`
+      ),
+      fetch(
+        `http://127.0.0.1:8000/fmp/stock-price-performance/${companySymbol}`
+      ),
+      fetch(`http://127.0.0.1:8000/company-summary/${companyName}`),
+      fetch(`http://127.0.0.1:8000/company-management/${companyName}`),
+      fetch(`http://127.0.0.1:8000/company-stock-details/${companyName}`),
+      fetch(`http://127.0.0.1:8000/company-overview/${companyName}`)
+    ]);
 
-    // const [
-    //   financialKeyMetricsData,
-    //   shareHoldingsStructureData,
-    //   stockPricePerformanceData,
-    //   companySummaryData,
-    //   companyManagementData,
-    //   companyStockDetailsData,
-    //   companyOverviewData
-    // ] = await Promise.all([
-    //   financialKeyMetrics.json(),
-    //   shareHoldingsStructure.json(),
-    //   stockPricePerformance.json(),
-    //   companySummary.json(),
-    //   companyManagement.json(),
-    //   companyStockDetails.json(),
-    //   companyOverview.json()
-    // ]);
+    const [
+      financialKeyMetricsData,
+      shareHoldingsStructureData,
+      stockPricePerformanceData,
+      companySummaryData,
+      companyManagementData,
+      companyStockDetailsData,
+      companyOverviewData
+    ] = await Promise.all([
+      financialKeyMetrics.json(),
+      shareHoldingsStructure.json(),
+      stockPricePerformance.json(),
+      companySummary.json(),
+      companyManagement.json(),
+      companyStockDetails.json(),
+      companyOverview.json()
+    ]);
 
-    // const companyProfile = {
-    //   financialKeyMetrics: financialKeyMetricsData,
-    //   shareHoldingsStructure: shareHoldingsStructureData,
-    //   stockPricePerformance: stockPricePerformanceData,
-    //   companySummary: companySummaryData,
-    //   companyManagement: companyManagementData,
-    //   companyStockDetails: companyStockDetailsData,
-    //   companyOverview: companyOverviewData
-    // };
+    const companyProfile = {
+      financialKeyMetrics: financialKeyMetricsData,
+      shareHoldingsStructure: shareHoldingsStructureData,
+      stockPricePerformance: stockPricePerformanceData,
+      companySummary: companySummaryData,
+      companyManagement: companyManagementData,
+      companyStockDetails: companyStockDetailsData,
+      companyOverview: companyOverviewData
+    };
 
-    const companyProfile = demoCompanyProfile;
+    // const companyProfile = demoCompanyProfile;
 
     setCompanyProfile(companyProfile);
   };
 
+  //   If loading is true, show a loading spinner
+  if (!companyProfile) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 w-full">
-      <Header companyName="Tesla" />
+      <div className="flex align-center justify-center">
+        {/* <Header companyName="Tesla" /> */}
+
+        {/* search box with search icon */}
+        <div className="flex align-center justify-center">
+          <input
+            type="text"
+            placeholder="Search for a company"
+            className="w-full p-2 rounded-md border border-gray-300"
+            onChange={e => setSearchValue(e.target.value)}
+          />
+
+          <button
+            className="bg-blue-500 text-white p-2 rounded-md"
+            onClick={() => {
+              // get the company profile from the API
+              getCompanyProfile(searchValue, searchValue);
+            }}
+          >
+            {/* Search icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
       <div
         className="grid p-2"
         style={{
