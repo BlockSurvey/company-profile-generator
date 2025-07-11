@@ -20,6 +20,11 @@ export default function CompanyProfile() {
     const companySymbol = 'TSLA';
     // Get the company profile from the API
     getCompanyProfile(companyName, companySymbol);
+
+    // Prevent double call in dev mode
+    return () => {
+      console.log('Company profile fetched');
+    };
   }, []);
 
   // Functions
@@ -27,14 +32,15 @@ export default function CompanyProfile() {
     companyName: string,
     companySymbol: string
   ) => {
-    // // Fetch the company full details from above all API's endpoint using Promise.all
+    // Fetch the company full details from above all API's endpoint using Promise.all
     // const [
     //   financialKeyMetrics,
     //   shareHoldingsStructure,
     //   stockPricePerformance,
     //   companySummary,
     //   companyManagement,
-    //   companyStockDetails
+    //   companyStockDetails,
+    //   companyOverview
     // ] = await Promise.all([
     //   fetch(`http://127.0.0.1:8000/fmp/financial-key-metrics/${companySymbol}`),
     //   fetch(
@@ -45,7 +51,8 @@ export default function CompanyProfile() {
     //   ),
     //   fetch(`http://127.0.0.1:8000/company-summary/${companyName}`),
     //   fetch(`http://127.0.0.1:8000/company-management/${companyName}`),
-    //   fetch(`http://127.0.0.1:8000/company-stock-details/${companyName}`)
+    //   fetch(`http://127.0.0.1:8000/company-stock-details/${companyName}`),
+    //   fetch(`http://127.0.0.1:8000/company-overview/${companyName}`)
     // ]);
 
     // const [
@@ -54,14 +61,16 @@ export default function CompanyProfile() {
     //   stockPricePerformanceData,
     //   companySummaryData,
     //   companyManagementData,
-    //   companyStockDetailsData
+    //   companyStockDetailsData,
+    //   companyOverviewData
     // ] = await Promise.all([
     //   financialKeyMetrics.json(),
     //   shareHoldingsStructure.json(),
     //   stockPricePerformance.json(),
     //   companySummary.json(),
     //   companyManagement.json(),
-    //   companyStockDetails.json()
+    //   companyStockDetails.json(),
+    //   companyOverview.json()
     // ]);
 
     // const companyProfile = {
@@ -70,7 +79,8 @@ export default function CompanyProfile() {
     //   stockPricePerformance: stockPricePerformanceData,
     //   companySummary: companySummaryData,
     //   companyManagement: companyManagementData,
-    //   companyStockDetails: companyStockDetailsData
+    //   companyStockDetails: companyStockDetailsData,
+    //   companyOverview: companyOverviewData
     // };
 
     const companyProfile = demoCompanyProfile;
@@ -96,23 +106,36 @@ export default function CompanyProfile() {
           <SharePriceChart companyProfile={companyProfile} />
           <div className="bg-white rounded shadow p-4">
             <h2 className="text-lg font-semibold mb-2">Management Members</h2>
-            {/* Placeholder for management members */}
-            <ul className="list-disc pl-5 text-gray-700">
+            {/* Management members list */}
+            <ul className="space-y-4">
               {companyProfile?.companyManagement?.top_management.map(
                 (member: any) => (
-                  <li key={member.name}>
-                    {member.name} - {member.title} - {member.since}
+                  <li
+                    key={member.name}
+                    className="flex flex-col bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+                  >
+                    <span className="text-lg font-semibold text-gray-900">
+                      {member.name}
+                    </span>
+                    <span className="text-sm text-gray-600">
+                      {member.title}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      Since {member.since}
+                    </span>
                   </li>
                 )
               )}
             </ul>
           </div>
         </div>
+
         {/* Second Column */}
         <div className="flex flex-col gap-4">
           <CompanyOverview companyProfile={companyProfile} />
           <KeyEvents companyProfile={companyProfile} />
         </div>
+
         {/* Third Column */}
         <div className="flex flex-col gap-4">
           <FinancialMetrics companyProfile={companyProfile} />
