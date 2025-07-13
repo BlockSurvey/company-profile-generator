@@ -8,38 +8,41 @@ export default function FinancialMetrics({
   const financialMetrics = companyProfile?.financialKeyMetrics || [];
 
   return (
-    <section className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-bold mb-2 text-gray-800">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+      <h3 className="text-sm font-semibold text-slate-900 mb-3">
         Financial Metrics
-      </h2>
+      </h3>
       <div className="overflow-x-auto">
-        <table style={{ maxWidth: '100px' }} className="text-left text-gray-600">
+        <table className="w-full text-xs text-slate-600">
           <thead>
-            <tr>
-              <th className="py-2 px-4 font-semibold">Year</th>
-              <th className="py-2 px-4 font-semibold">Type</th>
-              <th className="py-2 px-4 font-semibold">Revenue</th>
-              <th className="py-2 px-4 font-semibold">EBITDA</th>
-              <th className="py-2 px-4 font-semibold">EPS</th>
-              {/* <th className="py-2 px-4 font-semibold">Net Income</th>
-              <th className="py-2 px-4 font-semibold">ROE</th> */}
+            <tr className="border-b border-slate-200">
+              <th className="py-2 px-1 font-medium text-left">Year</th>
+              <th className="py-2 px-1 font-medium text-left">Type</th>
+              <th className="py-2 px-1 font-medium text-right">Revenue</th>
+              <th className="py-2 px-1 font-medium text-right">EBITDA</th>
+              <th className="py-2 px-1 font-medium text-right">EPS</th>
             </tr>
           </thead>
           <tbody>
             {financialMetrics.map((metric: any, index: number) => (
-              <tr key={index}>
-                <td className="py-2 px-4">{metric.year}</td>
-                <td className="py-2 px-4">{metric.type}</td>
-                <td className="py-2 px-4">${metric.revenue.toLocaleString()}M</td>
-                <td className="py-2 px-4">${metric.ebitda.toLocaleString()}M</td>
-                <td className="py-2 px-4">${metric.eps}</td>
-                {/* <td className="py-2 px-4">${metric.netIncome.toLocaleString()}M</td>
-                <td className="py-2 px-4">{metric.roe}</td> */}
+              <tr
+                key={index}
+                className="border-b border-slate-100 last:border-0"
+              >
+                <td className="py-1.5 px-1 font-medium">{metric.year}</td>
+                <td className="py-1.5 px-1 text-slate-500">{metric.type}</td>
+                <td className="py-1.5 px-1 text-right">
+                  ${metric.revenue?.toLocaleString() || 0}M
+                </td>
+                <td className="py-1.5 px-1 text-right">
+                  ${metric.ebitda?.toLocaleString() || 0}M
+                </td>
+                <td className="py-1.5 px-1 text-right">${metric.eps || 0}</td>
               </tr>
             ))}
           </tbody>
-          </table>
+        </table>
       </div>
-    </section>
+    </div>
   );
 }

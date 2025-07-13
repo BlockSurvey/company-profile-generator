@@ -4,7 +4,6 @@ import {
   Pie,
   Cell,
   Tooltip,
-  Legend,
   ResponsiveContainer
 } from 'recharts';
 
@@ -51,68 +50,98 @@ export default function ShareholdingStructure({
   }, [shareHoldingsStructure]);
 
   return (
-    <section className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-bold mb-2 text-gray-800">
-        Shareholding Structure
-      </h2>
+    <div className="space-y-4">
+      {/* Industry Distribution */}
+      <div>
+        <h4 className="text-xs font-medium text-slate-700 mb-2">By Industry</h4>
+        <div className="h-32">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={businessChartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={40}
+                fill="#8884d8"
+              >
+                {businessChartData.map((entry: any, index: number) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '6px',
+                  fontSize: '10px'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex flex-wrap gap-1 mt-2">
+          {businessChartData.map((entry: any, index: number) => (
+            <div key={index} className="flex items-center text-xs">
+              <div
+                className="w-2 h-2 rounded-full mr-1"
+                style={{ backgroundColor: COLORS[index % COLORS.length] }}
+              ></div>
+              <span className="text-slate-600 truncate">{entry.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold text-black">Industry</h3>
+      {/* Region Distribution */}
+      <div>
+        <h4 className="text-xs font-medium text-slate-700 mb-2">By Region</h4>
+        <div className="h-32">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={regionChartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={40}
+                fill="#8884d8"
+              >
+                {regionChartData.map((entry: any, index: number) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '6px',
+                  fontSize: '10px'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex flex-wrap gap-1 mt-2">
+          {regionChartData.map((entry: any, index: number) => (
+            <div key={index} className="flex items-center text-xs">
+              <div
+                className="w-2 h-2 rounded-full mr-1"
+                style={{ backgroundColor: COLORS[index % COLORS.length] }}
+              ></div>
+              <span className="text-slate-600 truncate">{entry.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="w-full h-full" style={{ width: '100%', height: '300px' }}>
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={businessChartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={90}
-              fill="#8884d8"
-              label
-            >
-              {businessChartData.map((entry: any, index: number) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend verticalAlign="bottom" />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold text-black">Region</h3>
-      </div>
-      <div className="w-full h-full" style={{ width: '100%', height: '300px' }}>
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={regionChartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={90}
-              fill="#8884d8"
-              label
-            >
-              {regionChartData.map((entry: any, index: number) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend verticalAlign="bottom" />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-    </section>
+    </div>
   );
 }

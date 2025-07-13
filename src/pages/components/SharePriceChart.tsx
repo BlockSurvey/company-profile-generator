@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   CartesianGrid,
-  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -25,13 +24,21 @@ export default function SharePriceChart({
     const chartData: any[] = [];
 
     if (companyProfile) {
-      companyProfile.stockPricePerformance.stock.labels.forEach((label: string, index: number) => {
-        chartData.push({
-          date: label,
-          stockPrice: companyProfile.stockPricePerformance.stock.datasets[0].data[index][0],
-          indexPrice: companyProfile.stockPricePerformance.index.datasets[0].data[index][0]
-        });
-      });
+      companyProfile.stockPricePerformance.stock.labels.forEach(
+        (label: string, index: number) => {
+          chartData.push({
+            date: label,
+            stockPrice:
+              companyProfile.stockPricePerformance.stock.datasets[0].data[
+                index
+              ][0],
+            indexPrice:
+              companyProfile.stockPricePerformance.index.datasets[0].data[
+                index
+              ][0]
+          });
+        }
+      );
     }
 
     setStockPricePerformance(chartData);
@@ -39,47 +46,48 @@ export default function SharePriceChart({
 
   return (
     <>
-      <section className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-2 text-gray-800">
-          Share Price Performance
-        </h2>
-        <div className="w-full bg-gray-100 flex items-center justify-center rounded">
-          {/* Draw the chart here using recharts */}
-          <div style={{ width: '100%', height: '400px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                width={500}
-                height={100}
-                data={stockPricePerformance}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 0,
-                  bottom: 0
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="stockPrice"
-                  name="Stock Price"
-                  stroke="#17925e"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="indexPrice"
-                  name="Index Price"
-                  stroke="#82ca9d"
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </section>
+      <div className="w-full h-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={stockPricePerformance}
+            margin={{
+              top: 5,
+              right: 5,
+              left: 5,
+              bottom: 5
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="#64748b" />
+            <YAxis tick={{ fontSize: 10 }} stroke="#64748b" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'white',
+                border: '1px solid #e2e8f0',
+                borderRadius: '6px',
+                fontSize: '12px'
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="stockPrice"
+              name="Stock Price"
+              stroke="#2563eb"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="indexPrice"
+              name="Index Price"
+              stroke="#10b981"
+              strokeWidth={2}
+              dot={false}
+              strokeDasharray="5 5"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </>
   );
 }

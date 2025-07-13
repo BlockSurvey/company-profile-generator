@@ -5,8 +5,22 @@ export default function Sidebar() {
     <aside className="w-64 bg-white shadow-lg flex flex-col p-6 min-h-screen">
       <nav className="mb-8">
         <ul className="space-y-4">
-          <li><a href="#" className="block font-semibold text-lg text-gray-800 hover:text-blue-600">Home</a></li>
-          <li><a href="#" className="block font-semibold text-lg text-gray-800 hover:text-blue-600">Profile</a></li>
+          <li>
+            <a
+              href="#"
+              className="block font-semibold text-lg text-gray-800 hover:text-blue-600"
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="block font-semibold text-lg text-gray-800 hover:text-blue-600"
+            >
+              Profile
+            </a>
+          </li>
         </ul>
       </nav>
       <div>
@@ -19,4 +33,4 @@ export default function Sidebar() {
       </div>
     </aside>
   );
-} 
+}
